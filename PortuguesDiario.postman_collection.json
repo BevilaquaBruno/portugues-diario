@@ -7,174 +7,179 @@
 	},
 	"item": [
 		{
-			"name": "Criar Dica",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"description\": \"Dica de teste\",\r\n    \"likes\": 0,\r\n    \"active\": true,\r\n    \"showed_in_date\": \"2024-02-29\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "dicas",
+			"item": [
+				{
+					"name": "Criar Dica",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"Dica de teste\",\r\n    \"likes\": 0,\r\n    \"active\": true,\r\n    \"showed_in_date\": \"2024-02-29\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/tips",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"tips"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "localhost:3000/tips",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"tips"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Editar Dica",
-			"request": {
-				"method": "PATCH",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"description\": \"Dicas de teste\",\r\n    \"likes\": 0,\r\n    \"active\": true,\r\n    \"showed_in_date\": \"2024-03-31\"\r\n}\r\n",
-					"options": {
-						"raw": {
-							"language": "json"
+				{
+					"name": "Editar Dica",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"Dicas de teste\",\r\n    \"likes\": 0,\r\n    \"active\": true,\r\n    \"showed_in_date\": \"2024-03-31\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/tips/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"tips",
+								"1"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "localhost:3000/tips/1",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"tips",
-						"1"
-					]
+				{
+					"name": "Todas as dicas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/tips",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"tips"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Uma dica",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/tips/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"tips",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar dica",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/tips/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"tips",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Like Tip",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/tips/like/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"tips",
+								"like",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Dislike Tip",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/tips/dislike/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"tips",
+								"dislike",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset dates",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/tips/reset",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"tips",
+								"reset"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
-		},
-		{
-			"name": "Todas as dicas",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:3000/tips",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"tips"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Uma dica",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:3000/tips/1",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"tips",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Deletar dica",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "localhost:3000/tips/1",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"tips",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Like Tip",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:3000/tips/like/1",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"tips",
-						"like",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Dislike Tip",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:3000/tips/dislike/1",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"tips",
-						"dislike",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Reset dates",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:3000/tips/reset",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"tips",
-						"reset"
-					]
-				}
-			},
-			"response": []
+			]
 		}
 	]
 }
