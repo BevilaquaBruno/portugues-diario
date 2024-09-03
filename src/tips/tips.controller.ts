@@ -17,7 +17,7 @@ export class TipsController {
     return this.tipsService.findAll();
   }
 
-  @Get(':id')
+  @Get('/:id(\\d+)')
   findOne(@Param('id') id: string) {
     return this.tipsService.findOne(+id);
   }
