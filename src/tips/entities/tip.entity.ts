@@ -13,4 +13,7 @@ export class Tip {
 
   @Column()
   active: boolean;
+
+  @Column({ type: 'date', nullable: true, default: null })
+  showed_in_date: Date | null;
 }

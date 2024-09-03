@@ -40,4 +40,8 @@ export class TipsService {
       return this.tipRepository.update(id, { likes:  tip.likes - 1 });
     });
   }
+
+  reset() {
+    return this.tipRepository.update({}, { showed_in_date: null });
+  }
 }

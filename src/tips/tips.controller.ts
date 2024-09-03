@@ -41,4 +41,9 @@ export class TipsController {
   dislikeTip(@Param('id') id: string) {
     return this.tipsService.dislikeTip(+id);
   }
+
+  @Get('/reset')
+  reset() {
+    return this.tipsService.reset();
+  }
 }

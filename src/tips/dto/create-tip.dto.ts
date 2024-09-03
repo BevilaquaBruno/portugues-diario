@@ -5,4 +5,6 @@ export class CreateTipDto {
   likes: number;
 
   active: boolean;
+
+  showed_in_date: Date | null;
 }
