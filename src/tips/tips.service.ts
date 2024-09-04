@@ -44,4 +44,12 @@ export class TipsService {
   reset() {
     return this.tipRepository.update({}, { showed_in_date: null });
   }
+
+  getTodayTip(date: string) {
+    return this.tipRepository.createQueryBuilder('tip').where('tip.showed_in_date = :date', { date: date }).getOne();
+  }
+
+  getFirstTipWithoutDate() {
+    return this.tipRepository.createQueryBuilder('tip').where('tip.showed_in_date IS NULL').orderBy('tip.id').getOne();
+  }
 }
