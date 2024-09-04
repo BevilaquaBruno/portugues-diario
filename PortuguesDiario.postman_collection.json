@@ -178,6 +178,25 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "dica de hoje",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/tips/today",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"tips",
+								"today"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
