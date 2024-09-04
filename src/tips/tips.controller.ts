@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus } from '@nestjs/common';
 import { TipsService } from './tips.service';
 import { CreateTipDto } from './dto/create-tip.dto';
 import { UpdateTipDto } from './dto/update-tip.dto';
@@ -50,6 +50,10 @@ export class TipsController {
 
   @Get('/today')
   async today() {
+    throw new HttpException(
+      'Aconteceu um problema ao buscar a dica do dia.',
+      HttpStatus.INTERNAL_SERVER_ERROR,
+    );    
     try {
       // Pega a data atual como objeto
       let today = new Date();
@@ -76,7 +80,10 @@ export class TipsController {
       return todayTip;
     } catch (error) {
       // deu alguma merda
-      return { status_code: 500, message: 'Erro ao pegar a dica do dia' };
+      throw new HttpException(
+        'Aconteceu um problema ao buscar a dica do dia.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }
