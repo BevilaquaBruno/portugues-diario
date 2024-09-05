@@ -18,7 +18,7 @@ import * as bcrypt from 'bcrypt';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
   @UseGuards(AuthGuard)
   @Post()
@@ -68,5 +68,30 @@ export class UserController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.userService.remove(+id);
+  }
+
+  @Post('cadastraoprimeirousuariopqeunaoseicomofazerkkkj')
+  async createPrimeiroUsuario(@Body() createUserDto: CreateUserDto) {
+    if (createUserDto.password != createUserDto.verify_password) {
+      throw new HttpException(
+        'As senhas devem ser iguais',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    const userAlreadyExists = await this.userService.findByEmail(
+      createUserDto.email,
+    );
+
+    if (userAlreadyExists?.email != undefined) {
+      throw new HttpException(
+        'Já existe um usuário com esse e-mail cadastrado',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
+    const newUser = await this.userService.create(createUserDto);
+
+    return this.userService.findOne(newUser.id);
   }
 }
