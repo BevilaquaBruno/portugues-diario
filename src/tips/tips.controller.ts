@@ -1,48 +1,57 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus, UseGuards } from '@nestjs/common';
 import { TipsService } from './tips.service';
 import { CreateTipDto } from './dto/create-tip.dto';
 import { UpdateTipDto } from './dto/update-tip.dto';
 import { returnDbDateFormatted } from 'src/helper';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('tips')
 export class TipsController {
   constructor(private readonly tipsService: TipsService) { }
 
+  @UseGuards(AuthGuard)
   @Post()
   create(@Body() createTip: CreateTipDto) {
     return this.tipsService.create(createTip);
   }
 
+  @UseGuards(AuthGuard)
   @Get()
   findAll() {
     return this.tipsService.findAll();
   }
 
+  @UseGuards(AuthGuard)
   @Get('/:id(\\d+)')
   findOne(@Param('id') id: string) {
     return this.tipsService.findOne(+id);
   }
 
+  @UseGuards(AuthGuard)
   @Patch(':id(\\d+)')
   update(@Param('id') id: string, @Body() updateTipDto: UpdateTipDto) {
     return this.tipsService.update(+id, updateTipDto);
   }
 
+  @UseGuards(AuthGuard)
   @Delete(':id(\\d+)')
   remove(@Param('id') id: string) {
     return this.tipsService.remove(+id);
   }
 
+  @UseGuards(AuthGuard)
   @Get('/like/:id(\\d+)')
   likeTip(@Param('id') id: string) {
     return this.tipsService.likeTip(+id);
   }
 
+  @UseGuards(AuthGuard)
   @Get('/dislike/:id(\\d+)')
   dislikeTip(@Param('id') id: string) {
     return this.tipsService.dislikeTip(+id);
   }
 
+  @UseGuards(AuthGuard)
   @Get('/reset')
   reset() {
     return this.tipsService.reset();
@@ -50,10 +59,6 @@ export class TipsController {
 
   @Get('/today')
   async today() {
-    throw new HttpException(
-      'Aconteceu um problema ao buscar a dica do dia.',
-      HttpStatus.INTERNAL_SERVER_ERROR,
-    );    
     try {
       // Pega a data atual como objeto
       let today = new Date();
@@ -75,7 +80,7 @@ export class TipsController {
 
       // Atualiza a data da dica de hoje no banco de dados
       await this.tipsService.update(todayTip.id, todayTip);
-      
+
       // Retorna a dica
       return todayTip;
     } catch (error) {
