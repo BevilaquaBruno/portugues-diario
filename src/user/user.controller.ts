@@ -71,7 +71,7 @@ export class UserController {
   }
 
   @Post('cadastraoprimeirousuariopqeunaoseicomofazerkkkj')
-  async createPrimeiroUsuario(@Body() createUserDto: CreateUserDto) {
+  async createFirstUser(@Body() createUserDto: CreateUserDto) {
     if (createUserDto.password != createUserDto.verify_password) {
       throw new HttpException(
         'As senhas devem ser iguais',
