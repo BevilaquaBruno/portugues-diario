@@ -2,11 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpS
 import { TipsService } from './tips.service';
 import { CreateTipDto } from './dto/create-tip.dto';
 import { UpdateTipDto } from './dto/update-tip.dto';
-import { returnDbDateFormatted } from 'src/helper';
 import { AuthGuard } from 'src/auth/auth.guard';
-import { Response } from 'express';
 
-@Controller('tips')
+@Controller('/api/tips')
 export class TipsController {
   constructor(private readonly tipsService: TipsService) { }
 

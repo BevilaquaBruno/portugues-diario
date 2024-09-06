@@ -5,7 +5,6 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import * as hbs from 'hbs';
 
-
 const PORT = process.env.MODE == 'DEVELOPMENT' ? 3000 : 80;
 
 async function bootstrap() {
