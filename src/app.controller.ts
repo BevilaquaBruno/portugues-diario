@@ -51,4 +51,9 @@ export class AppController {
       return res.render('errors/500');
     }
   }
+
+  @Get('login')
+  login(@Res() res: Response) {
+    return res.render('login');
+  }
 }
