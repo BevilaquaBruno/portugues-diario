@@ -42,7 +42,7 @@ export class AppController {
       return res.render(
         'tip/tip',
         {
-          layout: 'layouts/main',
+          layout: 'layouts/main-layout',
           ...todayTip
         }
       );
@@ -54,6 +54,6 @@ export class AppController {
 
   @Get('login')
   login(@Res() res: Response) {
-    return res.render('login');
+    return res.render('login', { layout: 'layouts/login-layout' });
   }
 }

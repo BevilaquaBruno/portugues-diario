@@ -8,7 +8,7 @@ export class DicasController {
   form(@Res() res: Response) {
     return res.render(
       'tip/form',
-      { layout: 'layouts/admin' }
+      { layout: 'layouts/admin-layout' }
     );
   }
 
@@ -16,7 +16,7 @@ export class DicasController {
   list(@Res() res: Response) {
     return res.render(
       'tip/list',
-      { layout: 'layouts/admin' }
+      { layout: 'layouts/admin-layout' }
     );
   }
 }

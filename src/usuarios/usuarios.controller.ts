@@ -8,7 +8,7 @@ export class UsuariosController {
   form(@Res() res: Response) {
     return res.render(
       'user/form',
-      { layout: 'layouts/admin' }
+      { layout: 'layouts/admin-layout' }
     );
   }
 
@@ -16,7 +16,7 @@ export class UsuariosController {
   list(@Res() res: Response) {
     return res.render(
       'user/list',
-      { layout: 'layouts/admin' }
+      { layout: 'layouts/admin-layout' }
     );
   }
 }

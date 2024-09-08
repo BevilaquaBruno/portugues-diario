@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus, UseGuards, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus, UseGuards, Res, Query } from '@nestjs/common';
 import { TipsService } from './tips.service';
 import { CreateTipDto } from './dto/create-tip.dto';
 import { UpdateTipDto } from './dto/update-tip.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { FindTipDto } from './dto/find-tip.dto';
 
 @Controller('/api/tips')
 export class TipsController {
@@ -16,8 +17,20 @@ export class TipsController {
 
   @UseGuards(AuthGuard)
   @Get()
-  findAll() {
-    return this.tipsService.findAll();
+  async findAll(@Query('page') page: string, @Query('limit') limit: string) {
+    const findTip: FindTipDto = {
+      page: null,
+      limit: null,
+    };
+
+    findTip.limit = limit == undefined ? 5 : parseInt(limit);
+    findTip.page =
+      page == undefined ? 0 : findTip.limit * (parseInt(page) - 1);
+
+    return {
+      data: await this.tipsService.findAll(findTip),
+      count: await this.tipsService.count(),
+    };
   }
 
   @UseGuards(AuthGuard)
