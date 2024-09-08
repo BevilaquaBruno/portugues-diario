@@ -4,11 +4,14 @@ import { Response } from 'express';
 @Controller('usuarios')
 export class UsuariosController {
 
-  @Get('cadastro')
-  form(@Res() res: Response) {
+  @Get('cadastrar')
+  create(@Res() res: Response) {
     return res.render(
       'user/form',
-      { layout: 'layouts/admin-layout' }
+      {
+        layout: 'layouts/admin-layout',
+        id: 0
+      }
     );
   }
 
@@ -17,6 +20,17 @@ export class UsuariosController {
     return res.render(
       'user/list',
       { layout: 'layouts/admin-layout' }
+    );
+  }
+
+  @Get('/editar/:id')
+  edit(@Res() res: Response, @Param('id') id: string) {
+    return res.render(
+      'user/form',
+      {
+        layout: 'layouts/admin-layout',
+        id: id
+      }
     );
   }
 }
