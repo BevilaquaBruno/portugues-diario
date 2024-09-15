@@ -1,8 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res } from '@nestjs/common';
+import { Controller, Get, Param, Res } from '@nestjs/common';
 import { Response } from 'express';
+import { UserService } from 'src/user/user.service';
 
 @Controller('usuarios')
 export class UsuariosController {
+
+  constructor(private readonly userService: UserService) { }
 
   @Get('cadastrar')
   create(@Res() res: Response) {
@@ -10,7 +13,12 @@ export class UsuariosController {
       'user/form',
       {
         layout: 'layouts/admin-layout',
-        id: 0
+        new: true,
+        user: {
+          id: 0,
+          name: '',
+          email: '',
+        }
       }
     );
   }
@@ -24,12 +32,16 @@ export class UsuariosController {
   }
 
   @Get('/editar/:id')
-  edit(@Res() res: Response, @Param('id') id: string) {
+  async edit(@Res() res: Response, @Param('id') id: string) {
+    let user = await this.userService.findOne(+id);
+    user.password = '';
+
     return res.render(
       'user/form',
       {
         layout: 'layouts/admin-layout',
-        id: id
+        new: false,
+        user: user
       }
     );
   }
