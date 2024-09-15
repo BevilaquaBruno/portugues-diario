@@ -1,6 +1,6 @@
 <div>
   <a href="/usuarios/cadastrar">Novo Usuário</a>
-  <table id="user_table">
+  <table id="user_table" class="base-table">
     <thead>
       <tr>
         <th>id</th>
@@ -40,8 +40,7 @@
   }
 
   function clearTable() {
-    let user_datatable = userTableEl;
-    user_datatable.children[1].innerHTML = "";
+    userTableEl.children[1].innerHTML = "";
   }
 
   function initTable() {
@@ -72,9 +71,3 @@
   }
 
 </script>
-
-<style>
-  #user_table tr:nth-child(even) {
-    background-color: #dddddd;
-  }
-</style>
