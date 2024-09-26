@@ -92,6 +92,7 @@ export class AppController {
       await this.tipsService.update(todayTip.id, todayTip);
     }
 
+    // seta o cache com a nova dica, esse 0 no final é para o cache não expirar nunca
     await this.cacheManager.set('todayTip', todayTip, 0);
     return todayTip;
   }
