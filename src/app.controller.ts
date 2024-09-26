@@ -10,6 +10,7 @@ export class AppController {
 
   constructor(private readonly tipsService: TipsService, @Inject(CACHE_MANAGER) private cacheManager: Cache) { }
 
+    /*
     @Get('/changeCacheDate')
     async changeCacheDate(){
       let todayTip;
@@ -20,6 +21,7 @@ export class AppController {
       await this.cacheManager.set('todayTip', todayTip, 0);
 
     }
+    */
 
 
   @Get('/')
