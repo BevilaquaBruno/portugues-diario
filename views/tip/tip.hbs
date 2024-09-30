@@ -1,0 +1,30 @@
+<div>
+  Dica: {{ description }}
+  <br>
+  Likes: <div id="likes">{{ likes }}</div>
+  <button onclick="rate(true)">Like</button>
+  <button onclick="rate(false)">Dislike</button>
+</div>
+
+<script type="text/javascript">
+  function rate(liked) {
+    // Cria a variável para a url baseado na ação do usuário
+    let endpoint = liked ? 'like' : 'dislike';
+
+    // se ele ainda não avaliou, então avalia, se ele já avaliou, nem cai dentro do if
+    if (localStorage.getItem('rated') != 'true') {
+      // faz a requisição get em api/tips/like para dar like e api/tips/dislike para dar dislike, passando o id
+      axios.get('/api/tips/' + endpoint + '/' + {{ id }}).then(function (response) {
+        //seta que já foi avaliado
+        localStorage.setItem('rated', true);
+        //aumenta na tela o like ou o dislike
+        let likeDiv = document.getElementById('likes');
+        if (liked)
+          likeDiv.innerHTML = parseInt(likeDiv.innerHTML) + 1;
+        else
+          likeDiv.innerHTML = parseInt(likeDiv.innerHTML) - 1;
+      });
+  }
+    
+  }
+</script>

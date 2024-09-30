@@ -16,7 +16,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import * as bcrypt from 'bcrypt';
 
-@Controller('user')
+@Controller('/api/user')
 export class UserController {
   constructor(private readonly userService: UserService) { }
 
@@ -33,7 +33,7 @@ export class UserController {
       createUserDto.email,
     );
 
-    if (userAlreadyExists?.email != undefined) {
+    if (userAlreadyExists != undefined && userAlreadyExists?.email != undefined) {
       throw new HttpException(
         'Já existe um usuário com esse e-mail cadastrado',
         HttpStatus.BAD_REQUEST,

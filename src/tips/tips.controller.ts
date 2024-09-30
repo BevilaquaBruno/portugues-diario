@@ -1,13 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus, UseGuards, Res, Query, Inject } from '@nestjs/common';
 import { TipsService } from './tips.service';
 import { CreateTipDto } from './dto/create-tip.dto';
 import { UpdateTipDto } from './dto/update-tip.dto';
-import { returnDbDateFormatted } from 'src/helper';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { FindTipDto } from './dto/find-tip.dto';
+import { CACHE_MANAGER } from "@nestjs/cache-manager";
+import { Cache } from 'cache-manager';
 
-@Controller('tips')
+@Controller('/api/tips')
 export class TipsController {
-  constructor(private readonly tipsService: TipsService) { }
+  constructor(private readonly tipsService: TipsService, @Inject(CACHE_MANAGER) private cacheManager: Cache) { }
 
   @UseGuards(AuthGuard)
   @Post()
@@ -17,8 +19,20 @@ export class TipsController {
 
   @UseGuards(AuthGuard)
   @Get()
-  findAll() {
-    return this.tipsService.findAll();
+  async findAll(@Query('page') page: string, @Query('limit') limit: string) {
+    const findTip: FindTipDto = {
+      page: null,
+      limit: null,
+    };
+
+    findTip.limit = limit == undefined ? 5 : parseInt(limit);
+    findTip.page =
+      page == undefined ? 0 : findTip.limit * (parseInt(page) - 1);
+
+    return {
+      data: await this.tipsService.findAll(findTip),
+      count: await this.tipsService.count(),
+    };
   }
 
   @UseGuards(AuthGuard)
@@ -39,15 +53,33 @@ export class TipsController {
     return this.tipsService.remove(+id);
   }
 
-  @UseGuards(AuthGuard)
   @Get('/like/:id(\\d+)')
-  likeTip(@Param('id') id: string) {
+  async likeTip(@Param('id') id: string) {
+    // pega a dica do cache atual
+    let todayTip: any = await this.cacheManager.get('todayTip');
+
+    // se ela existir, adiciona um like nela e coloca no cache de novo
+    if (undefined != todayTip) {
+      todayTip.likes = todayTip.likes + 1;
+      await this.cacheManager.set('todayTip', todayTip, 0);
+    }
+
+    // adiciona o like no banco
     return this.tipsService.likeTip(+id);
   }
 
-  @UseGuards(AuthGuard)
   @Get('/dislike/:id(\\d+)')
-  dislikeTip(@Param('id') id: string) {
+  async dislikeTip(@Param('id') id: string) {
+    // pega a dica do cache atual
+    let todayTip: any = await this.cacheManager.get('todayTip');
+
+    // se ela existir, adiciona um like nela e coloca no cache de novo
+    if (undefined != todayTip) {
+      todayTip.likes = todayTip.likes - 1;
+      await this.cacheManager.set('todayTip', todayTip, 0);
+    }
+
+    // remove o like no banco
     return this.tipsService.dislikeTip(+id);
   }
 
@@ -55,40 +87,5 @@ export class TipsController {
   @Get('/reset')
   reset() {
     return this.tipsService.reset();
-  }
-
-  @Get('/today')
-  async today() {
-    try {
-      // Pega a data atual como objeto
-      let today = new Date();
-      // Converte a data para o formato YYYY-MM-DD
-      let todayDate = returnDbDateFormatted(today);
-      // Procura no banco de dados uma dica com a data atual preenchida
-      let todayTipByDate = await this.tipsService.getTodayTip(todayDate);
-
-      // Se existir uma dica com essa data retorna ela
-      if (todayTipByDate != null)
-        return todayTipByDate;
-
-      // Se não existir uma dica com essa data, procura no banco a primeira que não tem data
-      let tipWithoutDate = await this.tipsService.getFirstTipWithoutDate();
-      // Converte essa dica na dica do dia
-      let todayTip = tipWithoutDate;
-      // Seta a data da dica para a data atual criada antes
-      todayTip.showed_in_date = today;
-
-      // Atualiza a data da dica de hoje no banco de dados
-      await this.tipsService.update(todayTip.id, todayTip);
-
-      // Retorna a dica
-      return todayTip;
-    } catch (error) {
-      // deu alguma merda
-      throw new HttpException(
-        'Aconteceu um problema ao buscar a dica do dia.',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
   }
 }

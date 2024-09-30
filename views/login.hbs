@@ -1,0 +1,51 @@
+<div style="text-align: center;">
+  <label for="tx_email">Email: </label>
+  <input type="text" name="tx_email" id="tx_email" placeholder="a@a.com">
+  <br />
+  <label for="tx_email">Senha: </label>
+  <input type="password" name="tx_password" id="tx_password" placeholder="•••••">
+  <br />
+  <button onclick="login()">Login</button>
+  <div id="error_message"></div>
+</div>
+
+<script type="text/javascript">
+  window.onload = function () {
+    let token = localStorage.getItem('token');
+    if (token != null) {
+      axios.get('/auth/isvalid', { headers: { Authorization: 'Bearer ' + token } })
+        .then(function (response) {
+          if (response.status === 200)
+            window.location.replace('/dicas');
+          else
+            localStorage.removeItem('token');
+        });
+    }
+  }
+
+  function login() {
+    removeErrorMessage();
+    let email = document.getElementById('tx_email').value;
+    let password = document.getElementById('tx_password').value;
+
+    axios.post('/auth/signin', { email: email, password: password })
+      .then(function (response) {
+        if (response.status === 200) {
+          localStorage.setItem('token', response.data.access_token);
+          window.location.replace('/dicas');
+        } else {
+          showErrorMessage('Email e senha incorretos');
+        }
+      }).catch(function (error) {
+        showErrorMessage('Email e senha incorretos');
+      });
+  }
+
+  function showErrorMessage(text) {
+    document.getElementById('error_message').innerHTML = text;
+  }
+
+  function removeErrorMessage(text) {
+    document.getElementById('error_message').innerHTML = '';
+  }
+</script>

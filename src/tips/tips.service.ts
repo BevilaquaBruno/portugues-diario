@@ -4,6 +4,7 @@ import { UpdateTipDto } from './dto/update-tip.dto';
 import { Tip } from './entities/tip.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { FindTipDto } from './dto/find-tip.dto';
 
 @Injectable()
 export class TipsService {
@@ -13,8 +14,11 @@ export class TipsService {
     return this.tipRepository.save(createTip);
   }
 
-  findAll() {
-    return this.tipRepository.find();
+  findAll(findTip: FindTipDto) {
+    return this.tipRepository.find({
+      take: findTip.limit,
+      skip: findTip.page,
+    });
   }
 
   findOne(id: number) {
@@ -51,5 +55,9 @@ export class TipsService {
 
   getFirstTipWithoutDate() {
     return this.tipRepository.createQueryBuilder('tip').where('tip.showed_in_date IS NULL').orderBy('tip.id').getOne();
+  }
+
+  count() {
+    return this.tipRepository.count();
   }
 }

@@ -1,0 +1,77 @@
+<div>
+  <a href="/dicas/cadastrar">Nova dica</a>
+  <table id="tip_table" class="base-table">
+    <thead>
+      <tr>
+        <th>id</th>
+        <th>Descrição</th>
+        <th>Likes</th>
+        <th>Data</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<script type="text/javascript">
+  var tip_list = [];
+  var tip_datatable = null;
+  var tiTableEl = document.getElementById('tip_table');
+
+  window.onload = function () {
+    isSessionValid().then(function (isValid) {
+      if (!isValid)
+        window.location.replace('/login');
+    });
+
+    getTips();
+  }
+
+  function getTips() {
+    axios.get('/api/tips?limit=9999&page=0').then(function (response) {
+      tip_list = response.data.data;
+      initTable();
+    });
+  }
+
+  function createTipDataTable() {
+    //https://www.cssscript.com/lightweight-vanilla-data-table-component/
+    tip_datatable = new DataTable(tiTableEl, patternForDatatable);
+  }
+
+  function clearTable() {
+    tiTableEl.children[1].innerHTML = "";
+  }
+
+  function initTable() {
+    let html = '';
+    for (let i = 0; i < tip_list.length; i++) {
+      const tip = tip_list[i];
+
+      html += "<tr>" +
+        "<td>" + tip['id'] + "</td> " +
+        "<td>" + tip['description'] + "</td> " +
+        "<td>" + tip['likes'] + "</td> " +
+        // verifica se a data é null, se for null coloca um - se não, exibe no formato dd/mm/yyyy
+        "<td>" + (tip['showed_in_date'] == null ? '-' : new Date(tip['showed_in_date']).toLocaleDateString()) + "</td> " +
+        "<td> " +
+        " <a href='/dicas/editar/" + tip['id'] + "'><span>Editar</span></a> " +
+        " <button ondblclick=\"handleDelete(" + tip['id'] + ", " + i + ");\">Excluir</button> " +
+        "</td> " +
+        "</tr>";
+    }
+    tiTableEl.children[1].innerHTML = html;
+    createTipDataTable();
+  }
+
+  function handleDelete(id, index) {
+    axios.delete('/api/tips/' + id).then(function (response) {
+      if (response.status === 200) {
+        tip_list.splice(index, 1);
+        tiTableEl.children[1].children[index].remove();
+      };
+    });
+  }
+
+</script>

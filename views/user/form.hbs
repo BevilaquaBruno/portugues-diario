@@ -1,0 +1,63 @@
+
+<div>
+  <a href="/usuarios">Voltar</a>
+  <input type="hidden" id="user_id" value="{{ user.id }}">
+  <div>
+    <label for="user_name">Nome:</label>
+    <input type="text" name="user_name" id="user_name" value="{{ user.name }}">
+  </div>
+  <div>
+    <label for="user_email">E-mail:</label>
+    <input type="text" name="user_email" id="user_email" value="{{ user.email }}">
+  </div>
+
+  {{#if new }}
+  <div>
+    <label for="password">Senha:</label>
+    <input type="text" name="password" id="password">
+  </div>
+  <div>
+    <label for="verify_password">Repita a senha:</label>
+    <input type="text" name="verify_password" id="verify_password">
+  </div>
+  {{/if}}
+  <div>
+    <button onclick="register()">Salvar</button>
+  </div>
+
+  <div id="error_message"></div>
+</div>
+
+<script type="text/javascript">
+  function register() {
+    let id = document.getElementById('user_id').value;
+    let name = document.getElementById('user_name').value;
+    let email = document.getElementById('user_email').value;
+    let error_message_div = document.getElementById('error_message');
+
+    if (0 == id) {
+      let password = document.getElementById('password').value;
+      let verify_password = document.getElementById('verify_password').value;
+
+      axios.post('/api/user', { name: name, email: email, password: password, verify_password: verify_password })
+        .then(function (response) {
+          if (201 == response.status) {
+            window.location.replace('/usuarios');
+          }
+        })
+        .catch(function (error) {
+          error_message_div.innerHTML = error.response.data.message;
+        });
+    } else {
+      axios.patch('/api/user/'+id, { name: name, email: email })
+        .then(function (response) {
+          if (200 == response.status) {
+            window.location.replace('/usuarios');
+          }
+        })
+        .catch(function (error) {
+          error_message_div.innerHTML = error.response.data.message;
+        });
+    }
+  }
+</script>

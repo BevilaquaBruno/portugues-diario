@@ -1,0 +1,73 @@
+<div>
+  <a href="/usuarios/cadastrar">Novo Usuário</a>
+  <table id="user_table" class="base-table">
+    <thead>
+      <tr>
+        <th>id</th>
+        <th>Nome</th>
+        <th>E-mail</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<script type="text/javascript">
+  var user_list = [];
+  var user_datatable = null;
+  var userTableEl = document.getElementById('user_table');
+
+  window.onload = function () {
+    isSessionValid().then(function (isValid) {
+      if (!isValid)
+        window.location.replace('/login');
+    });
+
+    getUsers();
+  }
+
+  function getUsers() {
+    axios.get('/api/user').then(function (response) {
+      user_list = response.data;
+      initTable();
+    });
+  }
+
+  function createUserDataTable() {
+    //https://www.cssscript.com/lightweight-vanilla-data-table-component/
+    user_datatable = new DataTable(userTableEl, patternForDatatable);
+  }
+
+  function clearTable() {
+    userTableEl.children[1].innerHTML = "";
+  }
+
+  function initTable() {
+    let html = '';
+    for (let i = 0; i < user_list.length; i++) {
+      const user = user_list[i];
+      html += "<tr>" +
+        "<td>" + user['id'] + "</td> " +
+        "<td>" + user['name'] + "</td> " +
+        "<td>" + user['email'] + "</td> " +
+        "<td> " +
+        " <a href='/usuarios/editar/" + user['id'] + "'><span>Editar</span></a> " +
+        " <button ondblclick=\"handleDelete(" + user['id'] + ", " + i + ");\">Excluir</button> " +
+        "</td> " +
+        "</tr>";
+    }
+    let userTBody = userTableEl.children[1].innerHTML = html;
+    createUserDataTable();
+  }
+
+  function handleDelete(id, index) {
+    axios.delete('/api/user/' + id).then(function (response) {
+      if (response.status === 200) {
+        user_list.splice(index, 1);
+        userTableEl.children[1].children[index].remove();
+      };
+    });
+  }
+
+</script>
