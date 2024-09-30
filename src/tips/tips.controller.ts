@@ -53,7 +53,6 @@ export class TipsController {
     return this.tipsService.remove(+id);
   }
 
-  @UseGuards(AuthGuard)
   @Get('/like/:id(\\d+)')
   async likeTip(@Param('id') id: string) {
     // pega a dica do cache atual
@@ -69,7 +68,6 @@ export class TipsController {
     return this.tipsService.likeTip(+id);
   }
 
-  @UseGuards(AuthGuard)
   @Get('/dislike/:id(\\d+)')
   async dislikeTip(@Param('id') id: string) {
     // pega a dica do cache atual
