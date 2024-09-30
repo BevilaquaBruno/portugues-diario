@@ -1,13 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus, UseGuards, Res, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus, UseGuards, Res, Query, Inject } from '@nestjs/common';
 import { TipsService } from './tips.service';
 import { CreateTipDto } from './dto/create-tip.dto';
 import { UpdateTipDto } from './dto/update-tip.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { FindTipDto } from './dto/find-tip.dto';
+import { CACHE_MANAGER } from "@nestjs/cache-manager";
+import { Cache } from 'cache-manager';
 
 @Controller('/api/tips')
 export class TipsController {
-  constructor(private readonly tipsService: TipsService) { }
+  constructor(private readonly tipsService: TipsService, @Inject(CACHE_MANAGER) private cacheManager: Cache) { }
 
   @UseGuards(AuthGuard)
   @Post()
@@ -53,13 +55,33 @@ export class TipsController {
 
   @UseGuards(AuthGuard)
   @Get('/like/:id(\\d+)')
-  likeTip(@Param('id') id: string) {
+  async likeTip(@Param('id') id: string) {
+    // pega a dica do cache atual
+    let todayTip: any = await this.cacheManager.get('todayTip');
+
+    // se ela existir, adiciona um like nela e coloca no cache de novo
+    if (undefined != todayTip) {
+      todayTip.likes = todayTip.likes + 1;
+      await this.cacheManager.set('todayTip', todayTip, 0);
+    }
+
+    // adiciona o like no banco
     return this.tipsService.likeTip(+id);
   }
 
   @UseGuards(AuthGuard)
   @Get('/dislike/:id(\\d+)')
-  dislikeTip(@Param('id') id: string) {
+  async dislikeTip(@Param('id') id: string) {
+    // pega a dica do cache atual
+    let todayTip: any = await this.cacheManager.get('todayTip');
+
+    // se ela existir, adiciona um like nela e coloca no cache de novo
+    if (undefined != todayTip) {
+      todayTip.likes = todayTip.likes - 1;
+      await this.cacheManager.set('todayTip', todayTip, 0);
+    }
+
+    // remove o like no banco
     return this.tipsService.dislikeTip(+id);
   }
 

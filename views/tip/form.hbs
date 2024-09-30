@@ -1,1 +1,54 @@
-formulário das dicas
+<div>
+  <a href="/dicas">Voltar</a>
+  <input type="hidden" id="tip_id" value="{{ tip.id }}">
+  <div>
+    <label for="tip_description">Descrição:</label>
+    <textarea name="tip_description" id="tip_description">{{ tip.description }}</textarea>
+  </div>
+  <div>
+    <label for="tip_likes">Likes:</label>
+    <input type="text" name="tip_likes" id="tip_likes" value="{{ tip.likes }}">
+  </div>
+  <div>
+    <label for="tip_active">Active:</label>
+    <input type="checkbox" name="tip_active" id="tip_active" {{#if tip.active}} checked {{/if}}>
+  </div>
+  <div>
+    <button onclick="register()">Salvar</button>
+  </div>
+
+  <div id="error_message"></div>
+</div>
+
+<script type="text/javascript">
+  function register() {
+    let id = document.getElementById('tip_id').value;
+    let description = document.getElementById('tip_description').value;
+    let likes = document.getElementById('tip_likes').value;
+    let checked = document.getElementById('tip_active').checked;
+
+    let error_message_div = document.getElementById('error_message');
+
+    if (0 == id) {
+      axios.post('/api/tips', { description: description, likes: likes, active: checked })
+        .then(function (response) {
+          if (201 == response.status) {
+            window.location.replace('/dicas');
+          }
+        })
+        .catch(function (error) {
+          error_message_div.innerHTML = error.response.data.message;
+        });
+    } else {
+      axios.patch('/api/tips/' + id, { description: description, likes: likes, active: checked })
+        .then(function (response) {
+          if (200 == response.status) {
+            window.location.replace('/dicas');
+          }
+        })
+        .catch(function (error) {
+          error_message_div.innerHTML = error.response.data.message;
+        });
+    }
+  }
+</script>
