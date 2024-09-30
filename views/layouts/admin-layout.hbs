@@ -10,6 +10,12 @@
   <!-- PUBLIC -->
   <script src="/javascript/helpers.js"></script>
   <link href="/css/main.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript">
+    function logout() {
+      localStorage.removeItem('token');
+      window.location.replace('/login');
+    }
+  </script>
 
   <!-- VANILLA DATATABLE -->
   <link href="https://cdn.jsdelivr.net/npm/vanilla-datatables@latest/dist/vanilla-dataTables.min.css" rel="stylesheet"
@@ -21,7 +27,10 @@
 
 <body>
   <header>
-    Admin
+    Admin <br />
+    <a href="/usuarios">Usuários</a>
+    <a href="/dicas">Dicas</a>
+    <a href="#" onclick="logout()">logout</a>
   </header>
   {{{body}}}
 </body>
