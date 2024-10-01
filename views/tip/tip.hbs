@@ -12,11 +12,11 @@
     let endpoint = liked ? 'like' : 'dislike';
 
     // se ele ainda não avaliou, então avalia, se ele já avaliou, nem cai dentro do if
-    if (localStorage.getItem('rated') != 'true') {
+    if (localStorage.getItem('ratedIn') != new Date().toLocaleDateString()) {
       // faz a requisição get em api/tips/like para dar like e api/tips/dislike para dar dislike, passando o id
       axios.get('/api/tips/' + endpoint + '/' + {{ id }}).then(function (response) {
         //seta que já foi avaliado
-        localStorage.setItem('rated', true);
+        localStorage.setItem('ratedIn', new Date().toLocaleDateString());
         //aumenta na tela o like ou o dislike
         let likeDiv = document.getElementById('likes');
         if (liked)
