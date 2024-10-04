@@ -1,5 +1,5 @@
 <div>
-  <a href="/usuarios/cadastrar">Novo Usuário</a>
+  <button class="my-button large-button"><a href="/usuarios/cadastrar">Novo Usuário</a></button>
   <table id="user_table" class="base-table">
     <thead>
       <tr>
@@ -52,8 +52,10 @@
         "<td>" + user['name'] + "</td> " +
         "<td>" + user['email'] + "</td> " +
         "<td> " +
-        " <a href='/usuarios/editar/" + user['id'] + "'><span>Editar</span></a> " +
-        " <button ondblclick=\"handleDelete(" + user['id'] + ", " + i + ");\">Excluir</button> " +
+        " <a href='/usuarios/editar/" + user['id'] + "'>" +
+        "   <button class='my-button icon-button info-button'><img src='image/icon-edit.svg' alt='Editar usuário' /></button>" +
+        " </a> " +
+        " <button class='my-button icon-button danger-button' ondblclick=\"handleDelete(" + user['id'] + ", " + i + ");\"><img src='image/icon-delete.svg' alt='Deletar usuário' /></button> " +
         "</td> " +
         "</tr>";
     }

@@ -1,5 +1,5 @@
 <div>
-  <a href="/dicas/cadastrar">Nova dica</a>
+  <button class="my-button large-button"><a href="/dicas/cadastrar">Nova dica</a></button>
   <table id="tip_table" class="base-table">
     <thead>
       <tr>
@@ -56,8 +56,10 @@
         // verifica se a data é null, se for null coloca um - se não, exibe no formato dd/mm/yyyy
         "<td>" + (tip['showed_in_date'] == null ? '-' : new Date(tip['showed_in_date']).toLocaleDateString()) + "</td> " +
         "<td> " +
-        " <a href='/dicas/editar/" + tip['id'] + "'><span>Editar</span></a> " +
-        " <button ondblclick=\"handleDelete(" + tip['id'] + ", " + i + ");\">Excluir</button> " +
+        " <a href='/dicas/editar/" + tip['id'] + "'>" +
+        "   <button class='my-button icon-button info-button'><img src='image/icon-edit.svg' alt='Editar dica' /></button>" +
+        " </a> " +
+        " <button class='my-button icon-button danger-button' ondblclick=\"handleDelete(" + tip['id'] + ", " + i + ");\"><img src='image/icon-delete.svg' alt='Delete dica' /></button> " +
         "</td> " +
         "</tr>";
     }

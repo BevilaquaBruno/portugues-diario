@@ -14,15 +14,64 @@
   margin: auto;
   border: 2px solid #2f2f2f;
   font-size: 15px;
+  background-color: #dfdfdf;
 }
 
+.large-button {
+  width: 200px;
+}
+
+.icon-button {
+  width: 40px;
+  padding: 1px;
+}
+
+
 .my-button:hover {
+  background-color: #e7e7e7;
   cursor: pointer;
+}
+
+.my-button:active {
+  background-color: #d4d4d4;
 }
 
 .success-button {
   background-color: #bbddb5;
 }
+
+.success-button:hover {
+  background-color: #c3e6bd;
+}
+
+.success-button:active {
+  background-color: #adcca8;
+}
+
+.danger-button {
+  background-color: #ddb5b5;
+}
+
+.danger-button:hover {
+  background-color: #e9bfbf;
+}
+
+.danger-button:active {
+  background-color: #d1acac;
+}
+
+.info-button {
+  background-color: #b5bedd;
+}
+
+.info-button:hover {
+  background-color: #bdc6e7;
+}
+
+.info-button:active {
+  background-color: #abb3d1;
+}
+
 
 .form-input {
   background-color: #2f2f2f00;

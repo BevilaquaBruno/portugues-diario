@@ -33,7 +33,6 @@
     <div class='pure-u-8-24'></div>
   </div>
 </div>
-</div>
 
 <script type='text/javascript'>
   window.onload = function () {
@@ -49,7 +48,9 @@
           200) window.location.replace('/dicas'); else localStorage.removeItem('token');
       });
     }
-  } function login() {
+  }
+  
+  function login() {
     removeErrorMessage(); let email =
       document.getElementById('tx_email').value; let password =
         document.getElementById('tx_password').value; axios.post('/auth/signin', {
