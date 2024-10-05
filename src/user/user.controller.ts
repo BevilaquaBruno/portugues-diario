@@ -60,7 +60,18 @@ export class UserController {
 
   @UseGuards(AuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    const userAlreadyExists = await this.userService.findByEmail(
+      updateUserDto.email,
+    );
+
+    if (userAlreadyExists != undefined && userAlreadyExists?.email != undefined) {
+      throw new HttpException(
+        'Já existe um usuário com esse e-mail cadastrado',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     return this.userService.update(+id, updateUserDto);
   }
 
