@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus, UseGuards, Res, Query, Inject } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus, UseGuards, Res, Query, Inject, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { TipsService } from './tips.service';
 import { CreateTipDto } from './dto/create-tip.dto';
 import { UpdateTipDto } from './dto/update-tip.dto';
@@ -6,6 +6,7 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { FindTipDto } from './dto/find-tip.dto';
 import { CACHE_MANAGER } from "@nestjs/cache-manager";
 import { Cache } from 'cache-manager';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('/api/tips')
 export class TipsController {
@@ -87,5 +88,33 @@ export class TipsController {
   @Get('/reset')
   reset() {
     return this.tipsService.reset();
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('/insert-by-file')
+  @UseInterceptors(FileInterceptor('file'))
+  insertByFile(@UploadedFile() file: Express.Multer.File) {
+    let fileText = file.buffer.toString();
+    let fileJson = JSON.parse(fileText);
+
+    try {
+      if (undefined != fileJson.tips) {
+        fileJson.tips.forEach(tip => {
+          this.tipsService.create({
+            active: true,
+            description: tip.description,
+            likes: 0,
+            showed_in_date: null
+          });
+        });
+      }
+
+      return true;
+    } catch (error) {
+      throw new HttpException(
+        'Ocorreu algum erro ao incluir as dicas do arquivo.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 }
