@@ -5,9 +5,9 @@
       <tr>
         <th>id</th>
         <th>Descrição</th>
-        <th>Likes</th>
+        <th>Likes / Ativo</th>
         <th>Data</th>
-        <th>Ações</th>
+        <th style="width: 100px;">Ações</th>
       </tr>
     </thead>
     <tbody></tbody>
@@ -52,10 +52,10 @@
       html += "<tr>" +
         "<td>" + tip['id'] + "</td> " +
         "<td>" + tip['description'] + "</td> " +
-        "<td>" + tip['likes'] + "</td> " +
+        "<td>" + tip['likes'] + " / " + (tip['active'] == true ? 'S' : 'N' ) + "</td> " +
         // verifica se a data é null, se for null coloca um - se não, exibe no formato dd/mm/yyyy
         "<td>" + (tip['showed_in_date'] == null ? '-' : new Date(tip['showed_in_date']).toLocaleDateString()) + "</td> " +
-        "<td> " +
+        "<td style='width: 110px;'> " +
         " <a href='/dicas/editar/" + tip['id'] + "'>" +
         "   <button class='my-button icon-button info-button'><img src='image/icon-edit.svg' alt='Editar dica' /></button>" +
         " </a> " +

@@ -1,29 +1,62 @@
 <div>
-  <a href="/dicas">Voltar</a>
-  <input type="hidden" id="tip_id" value="{{ tip.id }}">
-  <div>
-    <label for="tip_description">Descrição:</label>
-    <textarea name="tip_description" id="tip_description">{{ tip.description }}</textarea>
-  </div>
-  <div>
-    <label for="tip_likes">Likes:</label>
-    <input type="text" name="tip_likes" id="tip_likes" value="{{ tip.likes }}">
-  </div>
-  <div>
-    <label for="tip_active">Active:</label>
-    <input type="checkbox" name="tip_active" id="tip_active" {{#if tip.active}} checked {{/if}}>
-  </div>
-  <div>
-    <button onclick="register()">Salvar</button>
-  </div>
+  <form>
+    <input type="hidden" id="tip_id" value="{{ tip.id }}">
 
-  <div id="error_message"></div>
+    <div class="pure-g form-group">
+      <div class="pure-u-1-3">
+        <label class="form-span" for="tip_description">Descrição:</label>
+      </div>
+      <div class="pure-u-1-3" style="height: 100%;">
+        <div id="tip_description">
+          {{{ tip.description }}}
+        </div>
+      </div>
+    </div>
+
+    <div class="pure-g form-group">
+      <div class="pure-u-1-3">
+        <label class="form-span" for="tip_likes">Likes:</label>
+      </div>
+      <div class="pure-u-1-3">
+        <input class="form-input" type="number" name="tip_likes" id="tip_likes" value="{{ tip.likes }}">
+      </div>
+    </div>
+
+    <div class="pure-g form-group">
+      <div class="pure-u-5-24"></div>
+      <div class="pure-u-4-24">
+        <label class="form-span" for="tip_active">
+          Active:
+          <input type="checkbox" name="tip_active" id="tip_active" {{#if tip.active}} checked {{/if}}>
+        </label>
+      </div>
+    </div>
+  </form>
+
+  <div class="pure-g action-form-area">
+    <div class="pure-u-1-3"></div>
+    <div class="pure-u-1-3">
+      <button class="my-button success-button" onclick='register()'>Salvar</button>
+      <a href="/dicas"><button class="my-button">Voltar</button></a>
+    </div>
+    <div class="pure-u-1-3"></div>
+    <div class="pure-u-1-3"></div>
+    <div class="pure-u-1-3 form-error-message" id='error_message'></div>
+  </div>
 </div>
 
 <script type="text/javascript">
+  var quill;
+
+  window.onload = function () {
+    quill = new Quill('#tip_description', {
+      theme: 'snow'
+    });
+  }
+
   function register() {
     let id = document.getElementById('tip_id').value;
-    let description = document.getElementById('tip_description').value;
+    let description = quill.getSemanticHTML();
     let likes = document.getElementById('tip_likes').value;
     let checked = document.getElementById('tip_active').checked;
 
