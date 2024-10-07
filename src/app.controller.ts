@@ -49,7 +49,13 @@ export class AppController {
       });
     } catch (error) {
       // deu alguma merda
-      return res.render('errors/500');
+      return res.render('tip/tip', {
+        layout: 'layouts/main-layout',
+        id: 0,
+        description: 'Não foi encontrada uma dica para o dia de hoje.',
+        likes: 0,
+        showed_in_date: ''
+      });
     }
   }
 
