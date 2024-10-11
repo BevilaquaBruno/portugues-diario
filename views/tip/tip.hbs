@@ -7,6 +7,7 @@
         </div>
       </div>
       <div class="collumn">
+        <input type="hidden" name="tip_id" id="tip_id" value="{{ id }}">
         <div class="head"><span class="headline hl3">Dica do dia:</span>
           <p><span class="headline hl4"><span id="likes">{{ likes }}</span> likes</span></p>
         </div>
@@ -29,6 +30,8 @@
 
 <script type="text/javascript">
   function rate(liked) {
+    if(0 == document.getElementById('tip_id').value)
+      return;
     // Cria a variável para a url baseado na ação do usuário
     let endpoint = liked ? 'like' : 'dislike';
 
