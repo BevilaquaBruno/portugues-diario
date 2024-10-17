@@ -22,7 +22,7 @@ export class AuthService {
     const payload = { email: user.email, userId: user.id };
 
     return {
-      access_token: await this.jwtService.signAsync(payload),
+      access_token: await this.jwtService.signAsync(payload, { expiresIn: '2 days' }),
     };
   }
 }

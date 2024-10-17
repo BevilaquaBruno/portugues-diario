@@ -81,6 +81,7 @@ export class UserController {
     return this.userService.remove(+id);
   }
 
+  /*
   @Post('cadastraoprimeirousuariopqeunaoseicomofazerkkkj')
   async createFirstUser(@Body() createUserDto: CreateUserDto) {
     if (createUserDto.password != createUserDto.verify_password) {
@@ -105,4 +106,5 @@ export class UserController {
 
     return this.userService.findOne(newUser.id);
   }
+  */
 }
