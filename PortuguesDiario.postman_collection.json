@@ -251,46 +251,6 @@
               "variable": []
             }
           }
-        },
-        {
-          "name": "Criar primeiro usuario",
-          "event": [],
-          "request": {
-            "method": "POST",
-            "header": [],
-            "auth": {
-              "type": "bearer",
-              "bearer": {
-                "key": "token",
-                "value": "{{token}}",
-                "type": "string"
-              }
-            },
-            "description": "",
-            "url": {
-              "raw": "{{URL}}/api/user/cadastraoprimeirousuariopqeunaoseicomofazerkkkj",
-              "protocol": "",
-              "host": [
-                "{{URL}}"
-              ],
-              "path": [
-                "api",
-                "user",
-                "cadastraoprimeirousuariopqeunaoseicomofazerkkkj"
-              ],
-              "query": [],
-              "variable": []
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"Bruno Fernando\",\r\n    \"email\": \"bruno.f.bevilaqua2@gmail.com\",\r\n    \"password\": \"123\",\r\n    \"verify_password\": \"123\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
-          }
         }
       ]
     },
