@@ -22,8 +22,8 @@ export class TipsController {
   @Get()
   async findAll(@Query('page') page: string, @Query('limit') limit: string) {
     const findTip: FindTipDto = {
-      page: null,
-      limit: null,
+      page: 1,
+      limit: 10,
     };
 
     findTip.limit = limit == undefined ? 5 : parseInt(limit);
@@ -37,24 +37,24 @@ export class TipsController {
   }
 
   @UseGuards(AuthGuard)
-  @Get('/:id(\\d+)')
+  @Get('/:id')
   findOne(@Param('id') id: string) {
     return this.tipsService.findOne(+id);
   }
 
   @UseGuards(AuthGuard)
-  @Patch(':id(\\d+)')
+  @Patch(':id')
   update(@Param('id') id: string, @Body() updateTipDto: UpdateTipDto) {
     return this.tipsService.update(+id, updateTipDto);
   }
 
   @UseGuards(AuthGuard)
-  @Delete(':id(\\d+)')
+  @Delete(':id')
   remove(@Param('id') id: string) {
     return this.tipsService.remove(+id);
   }
 
-  @Get('/like/:id(\\d+)')
+  @Get('/like/:id')
   async likeTip(@Param('id') id: string) {
     // pega a dica do cache atual
     let todayTip: any = await this.cacheManager.get('todayTip');
@@ -69,7 +69,7 @@ export class TipsController {
     return this.tipsService.likeTip(+id);
   }
 
-  @Get('/dislike/:id(\\d+)')
+  @Get('/dislike/:id')
   async dislikeTip(@Param('id') id: string) {
     // pega a dica do cache atual
     let todayTip: any = await this.cacheManager.get('todayTip');
@@ -93,7 +93,7 @@ export class TipsController {
   @UseGuards(AuthGuard)
   @Post('/insert-by-file')
   @UseInterceptors(FileInterceptor('file'))
-  insertByFile(@UploadedFile() file: Express.Multer.File) {
+  insertByFile(@UploadedFile() file) {
     let fileText = file.buffer.toString();
     let fileJson = JSON.parse(fileText);
 

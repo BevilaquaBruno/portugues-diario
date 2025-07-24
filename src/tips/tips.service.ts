@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateTipDto } from './dto/create-tip.dto';
 import { UpdateTipDto } from './dto/update-tip.dto';
 import { Tip } from './entities/tip.entity';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindTipDto } from './dto/find-tip.dto';
 
@@ -34,14 +34,16 @@ export class TipsService {
   }
 
   likeTip(id: number) {
-    this.findOne(id).then((tip) => {
-      return this.tipRepository.update(id, { likes:  tip.likes + 1 });
+    this.findOne(id).then(async (tip) => {
+      if(null == tip) return { raw: {}, affected: 0 };
+      return await this.tipRepository.update(id, { likes:  tip.likes + 1 });
     });
   }
 
   dislikeTip(id: number) {
-    this.findOne(id).then((tip) => {
-      return this.tipRepository.update(id, { likes:  tip.likes - 1 });
+    this.findOne(id).then(async (tip) => {
+      if(null == tip) return { raw: {}, affected: 0 };
+      return await this.tipRepository.update(id, { likes:  tip.likes - 1 });
     });
   }
 

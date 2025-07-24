@@ -34,7 +34,8 @@ export class UsuariosController {
   @Get('/editar/:id')
   async edit(@Res() res: Response, @Param('id') id: string) {
     let user = await this.userService.findOne(+id);
-    user.password = '';
+    if (null != user)
+      user.password = '';
 
     return res.render(
       'user/form',

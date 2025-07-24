@@ -16,10 +16,4 @@ export class Tip {
 
   @Column({ type: 'date', nullable: true, default: null })
   showed_in_date: Date | null;
-
-  @CreateDateColumn({ name: 'created_at', type: 'timestamp', select: false })
-  createdAt: Date;
-
-  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp', select: false })
-  updatedAt: Date;
 }
