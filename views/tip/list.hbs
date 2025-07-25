@@ -63,7 +63,7 @@
   }
 
   function getTips() {
-    axios.get('/api/tips?limit=9999&page=0').then(function (response) {
+    axios.get('/api/tips?limit=9999&page=1').then(function (response) {
       tip_list = response.data.data;
       initTable();
     });

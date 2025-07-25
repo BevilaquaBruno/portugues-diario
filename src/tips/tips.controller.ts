@@ -10,7 +10,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('/api/tips')
 export class TipsController {
-  constructor(private readonly tipsService: TipsService, @Inject(CACHE_MANAGER) private cacheManager: Cache) { }
+  constructor(private readonly tipsService: TipsService, @Inject(CACHE_MANAGER) private cacheManager: Cache,) { }
 
   @UseGuards(AuthGuard)
   @Post()
